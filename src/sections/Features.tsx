@@ -5,8 +5,10 @@ import {
 } from "@dotlottie/react-player";
 import Image from "next/image";
 import productImage from "@/assets/product-image.png";
-import { useRef } from "react";
+import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
 import { DotLottie } from "@lottiefiles/dotlottie-react";
+import { animate, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 
 const tabs = [
   {
@@ -35,8 +37,42 @@ const tabs = [
   },
 ];
 
-const FeatureTab = (tab: (typeof tabs)[number]) => {
+const FeatureTab = (
+  props: (typeof tabs)[number] &
+    ComponentPropsWithoutRef<"div"> & { selected: boolean }
+) => {
   const dotLottieRef = useRef<DotLottieCommonPlayer>(null);
+
+  const xPercentage = useMotionValue(0);
+  const yPercentage = useMotionValue(0);
+
+  const maskImage = useMotionTemplate`radial-gradient(60px 60px at ${xPercentage}% ${yPercentage}%, white, transparent)`;
+
+  useEffect(() => {
+    if (!props.selected) {
+      // Stop animations if not selected
+      xPercentage.stop();
+      yPercentage.stop();
+      return;
+    }
+
+    xPercentage.set(0);
+    yPercentage.set(0);
+
+    animate(xPercentage, [0, 100, 100, 0, 0], {
+      duration: 4,
+      repeat: Infinity,
+      repeatType: "loop",
+      ease: "linear",
+    });
+
+    animate(yPercentage, [0, 0, 100, 100, 0], {
+      duration: 4,
+      repeat: Infinity,
+      repeatType: "loop",
+      ease: "linear",
+    });
+  }, [props.selected, xPercentage, yPercentage]); // Add dependencies
 
   const handleHover = () => {
     if (dotLottieRef.current) {
@@ -49,25 +85,25 @@ const FeatureTab = (tab: (typeof tabs)[number]) => {
     <div
       onMouseEnter={handleHover}
       className="border border-white/15 flex p-2.5 rounded-xl gap-2.5 items-center lg:flex-1 relative"
+      onClick={props.onClick}
     >
-      {/* Option 1: Fixed mask syntax with proper positioning */}
-      <div className="absolute inset-0 -m-px border border-[#A369FF] rounded-xl [mask-image:radial-gradient(80px_80px_at_0%_0%,black,transparent)]"></div>
-
-      {/* Option 2: Alternative approach - corner gradient */}
-      {/* <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#A369FF] via-transparent to-transparent p-px">
-        <div className="bg-transparent rounded-xl h-full w-full"></div>
-      </div> */}
+      {props.selected && (
+        <motion.div
+          style={{ maskImage }}
+          className="absolute inset-0 border-2 border-[#A369FF] rounded-xl"
+        />
+      )}
 
       <div className="h-12 w-12 border border-white/15 rounded-lg inline-flex items-center justify-center">
         <DotLottiePlayer
           ref={dotLottieRef}
-          src={tab.icon}
+          src={props.icon}
           className="h-5 w-5"
           autoplay
         />
       </div>
-      <div className="font-medium">{tab.title}</div>
-      {tab.isNew && (
+      <div className="font-medium">{props.title}</div>
+      {props.isNew && (
         <div className="text-xs rounded-full px-2 py-0.5 bg-[#8c44ff] text-black font-semibold">
           New
         </div>
@@ -77,6 +113,46 @@ const FeatureTab = (tab: (typeof tabs)[number]) => {
 };
 
 export const Features = () => {
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const backgroundPositionX = useMotionValue(tabs[0].backgroundPositionX);
+  const backgroundPositionY = useMotionValue(tabs[0].backgroundPositionY);
+  const backgroundSizeX = useMotionValue(tabs[0].backgroundSizeX);
+
+  const backgroundPosition = useMotionTemplate`${backgroundPositionX}% ${backgroundPositionY}%`;
+  const backgroundSize = useMotionTemplate`${backgroundSizeX}% auto`;
+
+  const handleSelectTab = (index: number) => {
+    setSelectedTab(index);
+
+    animate(
+      backgroundSizeX,
+      [backgroundSizeX.get(), 100, tabs[index].backgroundSizeX],
+      {
+        duration: 2,
+        ease: "easeInOut",
+      }
+    );
+
+    animate(
+      backgroundPositionX,
+      [backgroundPositionX.get(), tabs[index].backgroundPositionX],
+      {
+        duration: 0.5,
+        ease: "easeInOut",
+      }
+    );
+
+    animate(
+      backgroundPositionY,
+      [backgroundPositionY.get(), tabs[index].backgroundPositionY],
+      {
+        duration: 0.5,
+        ease: "easeInOut",
+      }
+    );
+  };
+
   return (
     <section className="py-20 md:py-24">
       <div className="container">
@@ -89,18 +165,24 @@ export const Features = () => {
         </p>
         <div className="mt-10 flex flex-col lg:flex-row gap-3">
           {tabs.map((tab, index) => (
-            <FeatureTab key={index} {...tab} />
+            <FeatureTab
+              key={index}
+              {...tab}
+              onClick={() => handleSelectTab(index)}
+              selected={index === selectedTab}
+            />
           ))}
         </div>
-        {/* Actual Dashboard to be displayed later */}
-        <div className="border border-white/20 p-2.5 rounded-xl mt-3 ">
-          <div
+
+        <div className="border border-white/20 p-2.5 rounded-xl mt-3">
+          <motion.div
             className="aspect-video bg-cover border border-white/20 rounded-lg"
             style={{
+              backgroundPosition,
+              backgroundSize,
               backgroundImage: `url(${productImage.src})`,
             }}
-          ></div>
-          {/* <Image src={productImage} alt="product" /> */}
+          />
         </div>
       </div>
     </section>

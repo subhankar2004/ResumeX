@@ -1,9 +1,8 @@
-import avatar1 from "@/assets/avatar-1.png";
-import avatar2 from "@/assets/avatar-2.png";
-import avatar3 from "@/assets/avatar-3.png";
-import avatar4 from "@/assets/avatar-4.png";
+"use client";
 import avatar5 from "@/assets/avatar-5.jpeg";
+import avatar6 from "@/assets/Sanchita.jpeg";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const testimonials = [
   {
@@ -20,15 +19,15 @@ const testimonials = [
   },
   {
     text: "“This product has completely transformed how I used to draft my resumes and cv's”",
-    name: "Subhankar Patra",
+    name: "Sanchita",
     title: "SWE @ UBS",
-    avatarImg: avatar5,
+    avatarImg: avatar6,
   },
   {
     text: "“This product has completely transformed how I used to draft my resumes and cv's”",
-    name: "Subhankar Patra",
+    name: "Sanchita",
     title: "SWE @ UBS",
-    avatarImg: avatar5,
+    avatarImg: avatar6,
   },
 ];
 
@@ -44,8 +43,18 @@ export const Testimonials = () => {
           making resume..
         </p>
         <div className="overflow-hidden mt-10 [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]">
-          <div className="flex gap-5 ">
-            {testimonials.map((testimonial, index) => (
+          <motion.div
+            initial={{ translateX: "-50%" }}
+            animate={{ translateX: "0" }}
+            transition={{
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 10,
+              ease: "linear",
+            }}
+            className="flex gap-5 pr-5 flex-none "
+          >
+            {[...testimonials, ...testimonials].map((testimonial, index) => (
               <div
                 key={index}
                 className="border border-white/15 p-6 md:p-10 rounded-xl bg-[linear-gradient(to_bottom_left,rgb(140,69,255,.3),black)] max-w-xs md:max-w-md flex-none"
@@ -54,11 +63,11 @@ export const Testimonials = () => {
                   {testimonial.text}
                 </div>
                 <div className="flex items-center gap-3 mt-5">
-                  <div className="relative after:content-[''] after:absolute after:inset-0 after:bg-[rgb(140,69,244)] after:mix-blend-soft-light before:content-[''] before:absolute before:inset-0 before:border before:border-white/30 before:z-10 before:rounded-lg">
+                  <div className="relative after:content-[''] after:absolute after:inset-0 after:mix-blend-soft-light before:content-[''] before:absolute before:inset-0 before:border before:border-white/30 before:z-10 before:rounded-lg">
                     <Image
                       src={testimonial.avatarImg}
                       alt="avatar"
-                      className="h-11 w-11 rounded-lg grayscale "
+                      className="h-11 w-11 rounded-lg "
                     />
                   </div>
                   <div className="">
@@ -70,7 +79,7 @@ export const Testimonials = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
