@@ -17,18 +17,7 @@ const testimonials = [
     title: "SWE @ UBS",
     avatarImg: avatar5,
   },
-  {
-    text: "“This product has completely transformed how I used to draft my resumes and cv's”",
-    name: "Sanchita",
-    title: "SWE @ UBS",
-    avatarImg: avatar6,
-  },
-  {
-    text: "“This product has completely transformed how I used to draft my resumes and cv's”",
-    name: "Sanchita",
-    title: "SWE @ UBS",
-    avatarImg: avatar6,
-  },
+  
 ];
 
 export const Testimonials = () => {
