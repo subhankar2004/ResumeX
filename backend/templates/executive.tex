@@ -1,0 +1,78 @@
+%-------------------------
+% ResumeX — Executive
+% Understated Times layout for senior leaders and managers with long track records.
+% ATS notes: one column, standard headings, real text (glyphtounicode), no graphics.
+%-------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[margin=0.65in, top=0.55in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tabularx}
+\usepackage{microtype}
+
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\pagestyle{empty}
+\urlstyle{same}
+\raggedright
+\setlength{\tabcolsep}{0in}
+\setlength{\parindent}{0pt}
+
+\titleformat{\section}{\vspace{-1pt}\bfseries\raggedright\normalsize}{}{0em}{\MakeUppercase}[{\vspace{1pt}\titlerule[0.4pt]\vspace{-3pt}}]
+
+\newcommand{\resumeItem}[1]{\item{#1\vspace{-1pt}}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+  \begin{tabular*}{\linewidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & \textbf{#2} \\
+    \textit{#3} & \textit{#4} \\
+  \end{tabular*}\vspace{-6pt}
+}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.2in, itemsep=1pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-3pt}}
+
+\begin{document}
+
+\begin{center}
+  {\fontsize{22}{26}\selectfont \bfseries {{NAME}}} \\ \vspace{4pt}
+  {{CONTACT}}
+\end{center}
+\vspace{-6pt}
+
+\section{Executive Summary}
+{{{SUMMARY}}}
+
+\section{Areas of Expertise}
+  \begin{itemize}[leftmargin=0in, label={}, itemsep=0pt]
+{{SKILLS}}
+  \end{itemize}
+
+\section{Professional Experience}
+  \resumeSubHeadingListStart
+{{EXPERIENCE}}
+  \resumeSubHeadingListEnd
+
+\section{Education}
+  \resumeSubHeadingListStart
+{{EDUCATION}}
+  \resumeSubHeadingListEnd
+
+\section{Certifications}
+  \resumeSubHeadingListStart
+{{CERTIFICATIONS}}
+  \resumeSubHeadingListEnd
+
+\section{Board \& Community Service}
+  \resumeSubHeadingListStart
+{{VOLUNTEER}}
+  \resumeSubHeadingListEnd
+
+\end{document}

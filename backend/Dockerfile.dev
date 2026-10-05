@@ -1,0 +1,21 @@
+FROM node:20-alpine
+
+# Install dependencies in /node_modules, outside the bind-mounted /app.
+# Node, TypeScript and Next.js resolve packages by walking up the directory
+# tree, so /app finds them without a nested node_modules volume (which
+# Docker Desktop fails to remount reliably on container restart).
+WORKDIR /
+COPY package*.json ./
+RUN npm install
+ENV PATH=/node_modules/.bin:$PATH
+
+WORKDIR /app
+
+# Copy source code
+COPY . .
+
+# Expose backend port
+EXPOSE 4000
+
+# Development mode with nodemon
+CMD ["npm", "run", "dev"]
