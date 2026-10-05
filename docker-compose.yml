@@ -1,0 +1,84 @@
+services:
+  frontend:
+    build:
+      context: ./Resumex
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Resumex:/app
+      - /app/.next
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    command: npm run dev
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - latex-compiler
+    networks:
+      - default
+      - compiler-net
+    command: npm run dev
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-resumex}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-resumex_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-resumex_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # Sandboxed LaTeX compile service. Deliberately isolated on its own
+  # internal-only network — it has no route to the internet and is only
+  # reachable from `backend`. See ARCHITECTURE.md section 3.
+  latex-compiler:
+    build:
+      context: ./latex-compiler
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: "1.0"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    networks:
+      - compiler-net
+    ports:
+      - "5001:5001"
+
+  # Dev convenience only — a browser UI for inspecting Postgres. Not part of
+  # the production stack.
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
+
+networks:
+  compiler-net:
+    internal: true
