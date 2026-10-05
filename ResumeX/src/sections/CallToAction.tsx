@@ -7,6 +7,7 @@ import {
   useSpring,
 } from "framer-motion";
 import { useRef, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 // Define a simple Button component to replace the import
 const Button = ({ children }: { children: React.ReactNode }) => (
@@ -27,6 +28,7 @@ const gridLineBg = {
 
 export const CallToAction = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { user } = useAuth();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [isHovering, setIsHovering] = useState(false);
@@ -125,7 +127,9 @@ export const CallToAction = () => {
               onMouseEnter={() => setIsHoveringButton(true)}
               onMouseLeave={() => setIsHoveringButton(false)}
             >
-              <Button>Get Started</Button>
+              <a href={user ? "/dashboard" : "/signup"}>
+                <Button>Get Started</Button>
+              </a>
             </div>
           </div>
         </motion.div>

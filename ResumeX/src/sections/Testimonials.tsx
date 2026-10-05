@@ -1,6 +1,5 @@
 "use client";
 import avatar5 from "@/assets/avatar-5.jpeg";
-import avatar6 from "@/assets/Sanchita.jpeg";
 import Image from "next/image";
 import { motion } from "framer-motion";
 

@@ -3,10 +3,8 @@ import {
   DotLottieCommonPlayer,
   DotLottiePlayer,
 } from "@dotlottie/react-player";
-import Image from "next/image";
 import productImage from "@/assets/product-image.png";
 import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
-import { DotLottie } from "@lottiefiles/dotlottie-react";
 import { animate, useMotionTemplate, useMotionValue } from "framer-motion";
 import { motion } from "framer-motion";
 
@@ -160,8 +158,8 @@ export const Features = () => {
           Elevate your Resume..
         </h2>
         <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto tracking-tight text-center mt-5">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est atque
-          nostrum, sapiente perferendis qui provident consectetur .
+          Pick an ATS-optimized template, let Rex write it with you, and manage
+          every version from one dashboard.
         </p>
         <div className="mt-10 flex flex-col lg:flex-row gap-3">
           {tabs.map((tab, index) => (

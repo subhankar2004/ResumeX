@@ -3,9 +3,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/Button";
 import starBg from "@/assets/stars.png";
 import { useRef } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export const Hero = () => {
   const sectionRef = useRef(null);
+  const { user } = useAuth();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -112,11 +114,13 @@ export const Hero = () => {
           ResumeX
         </h1>
         <p className="text-lg md:text-xl text-white/70 mt-5 text-center max-w-xl mx-auto">
-          Effortlessly create stunning LaTeX resumes with our AI chatbot, then
-          instantly customize the code and compile your perfect PDF.
+          Chat with Rex, your AI resume writer, and get an ATS-ready LaTeX
+          resume in minutes. Fine-tune every line, then download your PDF.
         </p>
         <div className="flex justify-center mt-7">
-          <Button>Get Started</Button>
+          <a href={user ? "/dashboard" : "/login"}>
+            <Button>Get Started</Button>
+          </a>
         </div>
       </div>
     </section>

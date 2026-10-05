@@ -2,6 +2,8 @@ import Logo from "@/assets/logo.svg";
 import XSocial from "@/assets/social-x.svg";
 import InstaSocial from "@/assets/social-instagram.svg";
 import YTSocial from "@/assets/social-youtube.svg";
+import Link from "next/link";
+import { navLinks } from "@/lib/navigation";
 
 export const Footer = () => {
   return (
@@ -9,41 +11,22 @@ export const Footer = () => {
       <div className="container">
         <div className="flex flex-col lg:flex-row lg:items-center gap-8">
           <div className="flex gap-2 items-center lg:flex-1">
-            <Logo className="h-6 w-6" />
-            <div className="font-medium">ResumeX AI</div>
+            <Link href="/" className="flex gap-2 items-center">
+              <Logo className="h-6 w-6" />
+              <div className="font-medium">ResumeX AI</div>
+            </Link>
           </div>
 
           <nav className="flex flex-col lg:flex-row gap-5 lg:gap-7 lg:flex-1 lg:justify-center">
-            <a
-              href="#"
-              className="text-white/70 hover:text-white text-xs md:text-sm transition"
-            >
-              Features
-            </a>
-            <a
-              href="#"
-              className="text-white/70 hover:text-white text-xs md:text-sm transition"
-            >
-              Developers
-            </a>
-            <a
-              href="#"
-              className="text-white/70 hover:text-white text-xs md:text-sm transition"
-            >
-              Company
-            </a>
-            <a
-              href="#"
-              className="text-white/70 hover:text-white text-xs md:text-sm transition"
-            >
-              Blog
-            </a>
-            <a
-              href="#"
-              className="text-white/70 hover:text-white text-xs md:text-sm transition"
-            >
-              ChangeLog
-            </a>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-white/70 hover:text-white text-xs md:text-sm transition"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
           <div className="flex gap-5 lg:flex-1 lg:justify-end">
